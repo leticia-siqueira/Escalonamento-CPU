@@ -41,3 +41,28 @@ Script started on 2026-09-08 17:14:50-03:00 [TERM="xterm-256color" TTY="/dev/pts
 [?2004lexit
 
 Script done on 2026-09-08 17:15:10-03:00 [COMMAND_EXIT_CODE="1"]
+Script started on 2026-09-08 17:36:33-03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="170" LINES="14"]
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4/Escalonamento-CPU[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4/Escalonamento-CPU[00m$ exit./scheduler edf voo.txt[1@rate[C[C[C[C[C[C[C[Cexit[K./scheduler rate voo.txtmake[K
+[?2004lmake: 'scheduler' is up to date.
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4/Escalonamento-CPU[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4/Escalonamento-CPU[00m$ makeexit./scheduler edf voo.txt[1@rate[C[C[C[C[C[C[C[C
+[?2004lExecutando RATE...
+Quantidade de tarefas: 0
+Tempo total: 0
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4/Escalonamento-CPU[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4/Escalonamento-CPU[00m$ exit
+[?2004lexit
+
+Script done on 2026-09-08 17:36:53-03:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2026-09-08 17:37:45-03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="170" LINES="14"]
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4/Escalonamento-CPU[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4/Escalonamento-CPU[00m$ exit./scheduler rate voo.txtmake[K clean
+[?2004lrm -f *.o scheduler
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4/Escalonamento-CPU[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4/Escalonamento-CPU[00m$ make
+[?2004lgcc -c main.c
+gcc main.o -o scheduler
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4/Escalonamento-CPU[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4/Escalonamento-CPU[00m$ make clean[6Pexit./scheduler rate voo.txtmake[K./scheduler rate voo.txt
+[?2004lExecutando RATE...
+Quantidade de tarefas: 2
+Tempo total: 100
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4/Escalonamento-CPU[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4/Escalonamento-CPU[00m$ exit
+[?2004lexit
+
+Script done on 2026-09-08 17:37:57-03:00 [COMMAND_EXIT_CODE="0"]

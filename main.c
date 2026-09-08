@@ -102,14 +102,20 @@ void ler_arquivo_entrada(const char *nome_arquivo){
 
 void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
     // loop i = 0 ate tempo_total, prioridade = menor periodo
-    printf("Executando RATE...\n");
-    printf("Quantidade de tarefas: %d\n", tarefas_totais);
-    printf("Tempo total: %d\n", tempo_total);
+    for (int i = 0; i < tempo_total, i++){
+
+        for (int j = 0; j < tarefas_totais - 1; j++){
+            if (i % tarefas[j].periodo == 0){
+                
+            }
+        }
+    }
 }
 
 void funcao_edf(Tarefa tarefas[], int tarefas_totais, int tempo_total){
     // loop  i = 0 ate tempo_total, prioridade = menor deadline_agora
 }
+
 
 int main(int argc, char *argv[]){
 
@@ -120,20 +126,28 @@ int main(int argc, char *argv[]){
 
     const char *nome_algoritmo = argv[1];
     const char *arquivo = argv[2];
-
-    if(strcmp(nome_algoritmo, "rate") != 0 || strcmp(nome_algoritmo, "edf") != 0){
+    
+    if(strcmp(nome_algoritmo, "rate") != 0 && strcmp(nome_algoritmo, "edf") != 0){
         fprintf(stderr, "Algoritmo invalido, use rate ou edf\n");
         exit(1);
     } 
-
+    
     ler_arquivo_entrada(arquivo);
-
+    
     if(strcmp(nome_algoritmo, "rate") == 0){
         funcao_rate(tarefas, tarefas_totais, tempo_total);
-
-    }else if(strcmp(nome_algoritmo, "edf") == 0){
         
-    }
+        FILE *arquivo_saida_rate = fopen("rate_lmss4.out", "w");
+        
+        
+        
+    }else if(strcmp(nome_algoritmo, "edf") == 0){
+        funcao_edf(tarefas, tarefas_totais, tempo_total);
+        
+        FILE *arquivo_saida_edf = fopen("edf_lmss4.out", "w");
+        
 
+    }
+    
     return 0;
 }
