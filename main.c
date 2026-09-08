@@ -20,6 +20,10 @@ typedef struct {
     int morreu;           
 } Tarefa;
 
+Tarefa tarefas[MAX_tarefas_arquivo];
+int tarefas_totais = 0;
+int tempo_total = 0;
+
 void ler_arquivo_entrada(const char *nome_arquivo){
     FILE *arquivo_de_entrada = fopen(nome_arquivo, "r");
 
@@ -37,23 +41,20 @@ void ler_arquivo_entrada(const char *nome_arquivo){
     }
 
     char *converter;
-    int tempo_total = strtol(linha, &converter, 10);
+    tempo_total = strtol(linha, &converter, 10);
 
-    if (fim_conversao == linha || tempo_total <= 0){
+    if (converter == linha || tempo_total <= 0){
         fprintf(stderr, "Tempo total invalido, deve ser um numero positivo\n");
         fclose(arquivo_de_entrada);
         exit(1);
     }
 
-    Tarefa tarefas[MAX_tarefas_arquivo];
-    int tarefas_totais = 0;
-
     while(fgets(linha, sizeof(linha), arquivo_de_entrada) != NULL){
         
-        char nome[64];
+        char nome[100];
         int periodo, deadline, burst;
         
-        int campos_lidos = sscanf(linha, "%s %d %d %d", nome, &periodo, &deadline, &burst);
+        int campos_lidos = sscanf(linha, "%99s %d %d %d", nome, &periodo, &deadline, &burst);
         
         if (campos_lidos != 4){
             fprintf(stderr, "Quantidade de argumentos da tarefa esta errado, use [nome] [periodo] [deadline] [burst]\n");
@@ -73,7 +74,7 @@ void ler_arquivo_entrada(const char *nome_arquivo){
             exit(1);
         }
 
-        if (tarefas_totais >= MAX_TAREFAS){
+        if (tarefas_totais >= MAX_tarefas_arquivo){
             fprintf(stderr, "Numero de tarefas maior que o limite :(\n");
             fclose(arquivo_de_entrada);
             exit(1);
@@ -86,7 +87,7 @@ void ler_arquivo_entrada(const char *nome_arquivo){
         tarefas[tarefas_totais].burst = burst;
 
         tarefas[tarefas_totais].tempo_sobrando = 0;
-        tarefas[tarefas_totais].deadline_atual = 0;
+        tarefas[tarefas_totais].deadline_agora = 0;
         tarefas[tarefas_totais].esta_pronta = 0;
 
         tarefas[tarefas_totais].terminou = 0;
@@ -99,6 +100,17 @@ void ler_arquivo_entrada(const char *nome_arquivo){
     fclose(arquivo_de_entrada);
 }
 
+void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
+    // loop i = 0 ate tempo_total, prioridade = menor periodo
+    printf("Executando RATE...\n");
+    printf("Quantidade de tarefas: %d\n", tarefas_totais);
+    printf("Tempo total: %d\n", tempo_total);
+}
+
+void funcao_edf(Tarefa tarefas[], int tarefas_totais, int tempo_total){
+    // loop  i = 0 ate tempo_total, prioridade = menor deadline_agora
+}
+
 int main(int argc, char *argv[]){
 
     if (argc != 3){
@@ -109,16 +121,19 @@ int main(int argc, char *argv[]){
     const char *nome_algoritmo = argv[1];
     const char *arquivo = argv[2];
 
-    if(strcmp(nome_algoritmo, "rate") == 0){
-
-    }else if(strcmp(nome_algoritmo, "edf") == 0){
-
-    }else{
-        fprintf(stderr, "Algoritmo invalido, use rate ou edf");
+    if(strcmp(nome_algoritmo, "rate") != 0 || strcmp(nome_algoritmo, "edf") != 0){
+        fprintf(stderr, "Algoritmo invalido, use rate ou edf\n");
         exit(1);
-    }
+    } 
 
     ler_arquivo_entrada(arquivo);
+
+    if(strcmp(nome_algoritmo, "rate") == 0){
+        funcao_rate(tarefas, tarefas_totais, tempo_total);
+
+    }else if(strcmp(nome_algoritmo, "edf") == 0){
+        
+    }
 
     return 0;
 }
