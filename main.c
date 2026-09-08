@@ -101,13 +101,50 @@ void ler_arquivo_entrada(const char *nome_arquivo){
 }
 
 void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
-    // loop i = 0 ate tempo_total, prioridade = menor periodo
-    for (int i = 0; i < tempo_total, i++){
+
+    fprintf(stderr, "iniciando rate: %d tarefas, tempo_total=%d\n", tarefas_totais, tempo_total);
+
+    for (int i = 0; i < tempo_total; i++){
 
         for (int j = 0; j < tarefas_totais - 1; j++){
             if (i % tarefas[j].periodo == 0){
-                
+                tarefas[j].tempo_sobrando = tempo_total;
+                tarefas[j].deadline_agora = tarefas[j].deadline;
+                tarefas[j].esta_pronta = 1;
             }
+        }
+
+        for (int m = 0; m < tempo_total - 1; m++){
+            if (tarefas[m].esta_pronta == 1 && tarefas[m].deadline_agora == i && tarefas[m].tempo_sobrando > 0){
+                tarefas[i].perdeu_prazo++;
+                tarefas[i].tempo_sobrando = 0;
+                tarefas[i].esta_pronta = 0;
+            }
+        }
+
+        int tarefa_priorizada = -1;
+
+        for (int p = 0; p < tarefas_totais; p++){
+            if (tarefas[p].esta_pronta == 1 && tarefas[p].tempo_sobrando > 0){
+                if (tarefa_priorizada == -1 || tarefas[p].periodo < tarefas[tarefa_priorizada].periodo){
+                    tarefa_priorizada = p;
+                }
+            }
+        }
+      
+        if (tarefa_priorizada != -1){
+            tarefas[tarefa_priorizada].tempo_sobrando--;
+
+            fprintf(stderr, "i=%d executando %s (sobra %d)\n",
+                    i, tarefas[tarefa_priorizada].nome, tarefas[tarefa_priorizada].tempo_sobrando);
+
+            if (tarefas[tarefa_priorizada].tempo_sobrando == 0){
+                tarefas[tarefa_priorizada].terminou++;
+                tarefas[tarefa_priorizada].esta_pronta = 0;
+            }
+        }else{
+           
+            fprintf(stderr, "i=%d idle\n", i);
         }
     }
 }
