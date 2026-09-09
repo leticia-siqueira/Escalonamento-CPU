@@ -176,3 +176,112 @@ i=99 executando ATT (sobra 80)
 [?2004lexit
 
 Script done on 2026-09-08 20:05:11-03:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2026-09-08 22:57:40-03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="170" LINES="19"]
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4[00m$ make
+[?2004lmake: 'scheduler' is up to date.
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4[00m$ makeexit./scheduler rate voo.txt
+[?2004liniciando rate: 2 tarefas, tempo_total=100
+i=0 idle
+i=1 idle
+i=2 idle
+i=3 idle
+i=4 idle
+i=5 idle
+i=6 idle
+i=7 idle
+i=8 idle
+i=9 idle
+i=10 idle
+i=11 idle
+i=12 idle
+i=13 idle
+i=14 idle
+i=15 idle
+i=16 idle
+i=17 idle
+i=18 idle
+i=19 idle
+i=20 idle
+i=21 idle
+i=22 idle
+i=23 idle
+i=24 idle
+i=25 idle
+i=26 idle
+i=27 idle
+i=28 idle
+i=29 idle
+i=30 idle
+i=31 idle
+i=32 idle
+i=33 idle
+i=34 idle
+i=35 idle
+i=36 idle
+i=37 idle
+i=38 idle
+i=39 idle
+i=40 idle
+i=41 idle
+i=42 idle
+i=43 idle
+i=44 idle
+i=45 idle
+i=46 idle
+i=47 idle
+i=48 idle
+i=49 idle
+i=50 idle
+i=51 idle
+i=52 idle
+i=53 idle
+i=54 idle
+i=55 idle
+i=56 idle
+i=57 idle
+i=58 idle
+i=59 idle
+i=60 idle
+i=61 idle
+i=62 idle
+i=63 idle
+i=64 idle
+i=65 idle
+i=66 idle
+i=67 idle
+i=68 idle
+i=69 idle
+i=70 idle
+i=71 idle
+i=72 idle
+i=73 idle
+i=74 idle
+i=75 idle
+i=76 idle
+i=77 idle
+i=78 idle
+i=79 idle
+i=80 idle
+i=81 idle
+i=82 idle
+i=83 idle
+i=84 idle
+i=85 idle
+i=86 idle
+i=87 idle
+i=88 idle
+i=89 idle
+i=90 idle
+i=91 idle
+i=92 idle
+i=93 idle
+i=94 idle
+i=95 idle
+i=96 idle
+i=97 idle
+i=98 idle
+i=99 idle
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4[00m$ exit
+[?2004lexit
+
+Script done on 2026-09-08 22:57:49-03:00 [COMMAND_EXIT_CODE="0"]

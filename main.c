@@ -106,11 +106,11 @@ void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
 
     for (int i = 0; i < tempo_total; i++){
 
-        for (int j = 0; j < tarefas_totais - 1; j++){
-            if (i % tarefas[j].periodo == 0){
-                tarefas[j].tempo_sobrando = tempo_total;
-                tarefas[j].deadline_agora = tarefas[j].deadline;
-                tarefas[j].esta_pronta = 1;
+        for (int m = 0; m < tarefas_totais; m++){
+            if (tarefas[m].esta_pronta == 1 && tarefas[m].deadline_agora == i && tarefas[m].tempo_sobrando > 0){
+                tarefas[m].perdeu_prazo++;
+                tarefas[m].tempo_sobrando = 0;
+                tarefas[m].esta_pronta = 0;
             }
         }
 
