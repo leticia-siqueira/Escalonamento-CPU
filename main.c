@@ -102,51 +102,84 @@ void ler_arquivo_entrada(const char *nome_arquivo){
 
 void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
 
-    fprintf(stderr, "iniciando rate: %d tarefas, tempo_total=%d\n", tarefas_totais, tempo_total);
+    FILE *arquivo_saida_rate = fopen("rate_lmss4.out", "w");
+
+    if (arquivo_saida_rate == NULL){
+        fprintf(stderr, "Erro ao abrir arquivo de arquivo_saida_rate do Rate\n");
+        exit(1);
+    }
+
+    int tarefa_atual = -1;   
+    int inicio = 0;
 
     for (int i = 0; i < tempo_total; i++){
 
-        for (int m = 0; m < tarefas_totais; m++){
-            if (tarefas[m].esta_pronta == 1 && tarefas[m].deadline_agora == i && tarefas[m].tempo_sobrando > 0){
-                tarefas[m].perdeu_prazo++;
-                tarefas[m].tempo_sobrando = 0;
-                tarefas[m].esta_pronta = 0;
+        for (int j = 0; j < tarefas_totais; j++){
+            if (i % tarefas[j].periodo == 0){
+                tarefas[j].tempo_sobrando = tarefas[j].burst;
+                tarefas[j].deadline_agora = i + tarefas[j].deadline;
+                tarefas[j].esta_pronta = 1;
             }
         }
 
-        for (int m = 0; m < tempo_total - 1; m++){
-            if (tarefas[m].esta_pronta == 1 && tarefas[m].deadline_agora == i && tarefas[m].tempo_sobrando > 0){
-                tarefas[i].perdeu_prazo++;
-                tarefas[i].tempo_sobrando = 0;
-                tarefas[i].esta_pronta = 0;
+        for (int a = 0; a < tarefas_totais; a++){
+            if (tarefas[a].esta_pronta == 1 && tarefas[a].deadline_agora == i && tarefas[a].tempo_sobrando > 0){
+                tarefas[a].perdeu_prazo++;
+                tarefas[a].tempo_sobrando = 0;
+                tarefas[a].esta_pronta = 0;
             }
+
+
         }
 
         int tarefa_priorizada = -1;
 
-        for (int p = 0; p < tarefas_totais; p++){
-            if (tarefas[p].esta_pronta == 1 && tarefas[p].tempo_sobrando > 0){
-                if (tarefa_priorizada == -1 || tarefas[p].periodo < tarefas[tarefa_priorizada].periodo){
-                    tarefa_priorizada = p;
+        for (int b = 0; b < tarefas_totais; b++){
+            if (tarefas[b].esta_pronta == 1 && tarefas[b].tempo_sobrando > 0){
+                if (tarefa_priorizada == -1 || tarefas[b].periodo < tarefas[tarefa_priorizada].periodo){
+                    tarefa_priorizada = b;
                 }
             }
+        }
+
+        if (tarefa_priorizada != tarefa_atual){
+
+        int duracao = i - inicio;
+
+        if (duracao > 0){
+            if (tarefa_atual == -1){
+                fprintf(arquivo_saida_rate, "idle for %d units\n", duracao);
+            }else{
+                char letra;
+                
+                if (perdeu_bloco_agora == 1){
+                    letra = 'L';
+                }else if (tarefas[tarefa_atual].tempo_sobrando == 0){
+                    letra = 'F';
+                }else{
+                    letra = 'H';
+                }
+                fprintf(arquivo_saida_rate, "[%s] for %d units - %c\n", tarefas[tarefa_atual].nome, duracao, letra);
+            }
+        }
+
+        tarefa_atual = tarefa_priorizada;
+        inicio = i;
         }
       
         if (tarefa_priorizada != -1){
             tarefas[tarefa_priorizada].tempo_sobrando--;
 
-            fprintf(stderr, "i=%d executando %s (sobra %d)\n",
-                    i, tarefas[tarefa_priorizada].nome, tarefas[tarefa_priorizada].tempo_sobrando);
-
             if (tarefas[tarefa_priorizada].tempo_sobrando == 0){
                 tarefas[tarefa_priorizada].terminou++;
                 tarefas[tarefa_priorizada].esta_pronta = 0;
+
             }
-        }else{
-           
-            fprintf(stderr, "i=%d idle\n", i);
+
         }
     }
+
+    fclose(arquivo_saida_rate);
 }
 
 void funcao_edf(Tarefa tarefas[], int tarefas_totais, int tempo_total){
@@ -174,15 +207,8 @@ int main(int argc, char *argv[]){
     if(strcmp(nome_algoritmo, "rate") == 0){
         funcao_rate(tarefas, tarefas_totais, tempo_total);
         
-        FILE *arquivo_saida_rate = fopen("rate_lmss4.out", "w");
-        
-        
-        
     }else if(strcmp(nome_algoritmo, "edf") == 0){
         funcao_edf(tarefas, tarefas_totais, tempo_total);
-        
-        FILE *arquivo_saida_edf = fopen("edf_lmss4.out", "w");
-        
 
     }
     
