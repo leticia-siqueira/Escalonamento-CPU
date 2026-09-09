@@ -109,12 +109,17 @@ void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
         exit(1);
     }
 
+    fprintf(arquivo_saida_rate, "EXECUTION BY RATE\n");
+
     int tarefa_atual = -1;   
     int inicio = 0;
 
     for (int i = 0; i < tempo_total; i++){
 
+        int perdeu_prioridade_agora = 0;
+
         for (int j = 0; j < tarefas_totais; j++){
+            
             if (i % tarefas[j].periodo == 0){
                 tarefas[j].tempo_sobrando = tarefas[j].burst;
                 tarefas[j].deadline_agora = i + tarefas[j].deadline;
@@ -123,6 +128,7 @@ void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
         }
 
         for (int a = 0; a < tarefas_totais; a++){
+            
             if (tarefas[a].esta_pronta == 1 && tarefas[a].deadline_agora == i && tarefas[a].tempo_sobrando > 0){
                 tarefas[a].perdeu_prazo++;
                 tarefas[a].tempo_sobrando = 0;
@@ -135,7 +141,9 @@ void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
         int tarefa_priorizada = -1;
 
         for (int b = 0; b < tarefas_totais; b++){
+            
             if (tarefas[b].esta_pronta == 1 && tarefas[b].tempo_sobrando > 0){
+            
                 if (tarefa_priorizada == -1 || tarefas[b].periodo < tarefas[tarefa_priorizada].periodo){
                     tarefa_priorizada = b;
                 }
@@ -147,43 +155,67 @@ void funcao_rate(Tarefa tarefas[], int tarefas_totais, int tempo_total){
         int duracao = i - inicio;
 
         if (duracao > 0){
+            
             if (tarefa_atual == -1){
-                fprintf(arquivo_saida_rate, "idle for %d units\n", duracao);
-            }else{
-                char letra;
                 
-                if (perdeu_bloco_agora == 1){
-                    letra = 'L';
+                fprintf(arquivo_saida_rate, "idle for %d units\n", duracao);
+            
+            }else{
+            
+                char letra_estado_final;
+                
+                if (perdeu_prioridade_agora == 1){
+                    letra_estado_final = 'L';
+            
                 }else if (tarefas[tarefa_atual].tempo_sobrando == 0){
-                    letra = 'F';
+                    letra_estado_final = 'F';
+            
                 }else{
-                    letra = 'H';
+                    letra_estado_final = 'H';
                 }
-                fprintf(arquivo_saida_rate, "[%s] for %d units - %c\n", tarefas[tarefa_atual].nome, duracao, letra);
+            
+                fprintf(arquivo_saida_rate, "[%s] for %d units - %c\n", tarefas[tarefa_atual].nome, duracao, letra_estado_final);
+            
             }
         }
 
         tarefa_atual = tarefa_priorizada;
+        
         inicio = i;
-        }
-      
-        if (tarefa_priorizada != -1){
-            tarefas[tarefa_priorizada].tempo_sobrando--;
+        
+    }
 
+        
+        if (tarefa_priorizada != -1){
+            
+            tarefas[tarefa_priorizada].tempo_sobrando--;
+            
             if (tarefas[tarefa_priorizada].tempo_sobrando == 0){
                 tarefas[tarefa_priorizada].terminou++;
                 tarefas[tarefa_priorizada].esta_pronta = 0;
+                
+            }
+            
+            int tempo_restante = tempo_total - inicio;
 
+            if (tempo_restante > 0){
+                
+                if (tarefa_atual == -1){
+                    fprintf(arquivo_saida_rate, "idle for %d units\n", tempo_restante);
+                
+                }else{
+                    fprintf(arquivo_saida_rate, "[%s] for %d units\n", tarefas[tarefa_atual].nome, tempo_restante);
+                }
             }
 
         }
     }
-
+    
     fclose(arquivo_saida_rate);
 }
 
 void funcao_edf(Tarefa tarefas[], int tarefas_totais, int tempo_total){
-    // loop  i = 0 ate tempo_total, prioridade = menor deadline_agora
+    // loop  i = 0 ate tempo_total, prioridade = menor deadline_agora 
 }
 
 
