@@ -5,8 +5,8 @@
 #define MAX_LINHA 256
 #define MAX_tarefas_arquivo 200
 
-typedef struct {
-    char nome[64];
+typedef struct escalonador{
+    char nome[100];
     int periodo;
     int deadline;     
     int burst;          
@@ -16,8 +16,7 @@ typedef struct {
     int esta_pronta;         
 
     int terminou;        
-    int perdeu_prazo;  
-    int morreu;           
+    int perdeu_prazo;             
 } escalonador;
 
 escalonador tarefas[MAX_tarefas_arquivo];
@@ -93,7 +92,6 @@ void ler_arquivo_entrada(const char *nome_arquivo){
 
         tarefas[tarefas_totais].terminou = 0;
         tarefas[tarefas_totais].perdeu_prazo = 0;
-        tarefas[tarefas_totais].morreu = 0;
 
         tarefas_totais++;
     }
@@ -233,15 +231,15 @@ void funcao_rate(escalonador tarefas[], int tarefas_totais, int tempo_total){
 }
 
 void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
-    // loop  i = 0 ate tempo_total, prioridade = menor deadline_agora 
-        FILE *arquivo_saida_rate = fopen("rate_lmss4.out", "w");
 
-    if (arquivo_saida_rate == NULL){
-        fprintf(stderr, "Erro ao abrir arquivo de arquivo_saida_rate do Rate\n");
+    FILE *arquivo_saida_edf = fopen("edf_lmss4.out", "w");
+
+    if (arquivo_saida_edf == NULL){
+        fprintf(stderr, "Erro ao abrir arquivo de saida do EDF\n");
         exit(1);
     }
 
-    fprintf(arquivo_saida_rate, "EXECUTION BY RATE\n\n");
+    fprintf(arquivo_saida_edf, "EXECUTION BY EDF\n\n");
 
     int tarefa_atual = -1;
     int inicio = 0;
@@ -259,7 +257,7 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
         }
 
         for (int a = 0; a < tarefas_totais; a++){
-            
+
             if (tarefas[a].esta_pronta == 1 && tarefas[a].deadline_agora == i && tarefas[a].tempo_sobrando > 0){
                 tarefas[a].perdeu_prazo++;
                 tarefas[a].tempo_sobrando = 0;
@@ -274,10 +272,10 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
         int tarefa_priorizada = -1;
 
         for (int b = 0; b < tarefas_totais; b++){
-            
+
             if (tarefas[b].esta_pronta == 1 && tarefas[b].tempo_sobrando > 0){
-            
-                if (tarefa_priorizada == -1 || tarefas[b].periodo < tarefas[tarefa_priorizada].periodo){
+
+                if (tarefa_priorizada == -1 || tarefas[b].deadline_agora < tarefas[tarefa_priorizada].deadline_agora){
                     tarefa_priorizada = b;
                 }
             }
@@ -288,24 +286,24 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
             int duracao = i - inicio;
 
             if (duracao > 0){
-               
+
                 if (tarefa_atual == -1){
-                    fprintf(arquivo_saida_rate, "idle for %d units\n", duracao);
-               
+                    fprintf(arquivo_saida_edf, "idle for %d units\n", duracao);
+
                 }else{
                     char letra_estado_final;
 
                     if (perdeu_prazo_agora == 1){
                         letra_estado_final = 'L';
-                    
+
                     }else if (tarefas[tarefa_atual].tempo_sobrando == 0){
                         letra_estado_final = 'F';
-                    
+
                     }else{
                         letra_estado_final = 'H';
                     }
 
-                    fprintf(arquivo_saida_rate, "[%s] for %d units - %c\n", tarefas[tarefa_atual].nome, duracao, letra_estado_final);
+                    fprintf(arquivo_saida_edf, "[%s] for %d units - %c\n", tarefas[tarefa_atual].nome, duracao, letra_estado_final);
                 }
             }
 
@@ -314,7 +312,7 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
         }
 
         if (tarefa_priorizada != -1){
-            
+
             tarefas[tarefa_priorizada].tempo_sobrando--;
 
             if (tarefas[tarefa_priorizada].tempo_sobrando == 0){
@@ -325,49 +323,49 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
     }
 
     int duracao_final = tempo_total - inicio;
-    
+
     if (duracao_final > 0){
-        
+
         if (tarefa_atual == -1){
-            fprintf(arquivo_saida_rate, "idle for %d units\n", duracao_final);
-        
+            fprintf(arquivo_saida_edf, "idle for %d units\n", duracao_final);
+
         }else{
-            fprintf(arquivo_saida_rate, "[%s] for %d units\n", tarefas[tarefa_atual].nome, duracao_final);
+            fprintf(arquivo_saida_edf, "[%s] for %d units\n", tarefas[tarefa_atual].nome, duracao_final);
         }
     }
 
-    fprintf(arquivo_saida_rate, "\nLOST DEADLINES\n\n");
-    
+    fprintf(arquivo_saida_edf, "\nLOST DEADLINES\n\n");
+
     for (int k = 0; k < tarefas_totais; k++){
-        fprintf(arquivo_saida_rate, "[%s] %d\n", tarefas[k].nome, tarefas[k].perdeu_prazo);
+        fprintf(arquivo_saida_edf, "[%s] %d\n", tarefas[k].nome, tarefas[k].perdeu_prazo);
     }
 
-    fprintf(arquivo_saida_rate, "\nCOMPLETE EXECUTION\n\n");
-    
+    fprintf(arquivo_saida_edf, "\nCOMPLETE EXECUTION\n\n");
+
     for (int k = 0; k < tarefas_totais; k++){
-        fprintf(arquivo_saida_rate, "[%s] %d\n", tarefas[k].nome, tarefas[k].terminou);
+        fprintf(arquivo_saida_edf, "[%s] %d\n", tarefas[k].nome, tarefas[k].terminou);
     }
 
-    fprintf(arquivo_saida_rate, "\nKILLED\n\n");
-    
+    fprintf(arquivo_saida_edf, "\nKILLED\n\n");
+
     for (int k = 0; k < tarefas_totais; k++){
         int killed = 0;
-    
+
         if (tarefas[k].esta_pronta == 1 && tarefas[k].tempo_sobrando > 0){
             killed = 1;
         }
-    
-        fprintf(arquivo_saida_rate, "[%s] %d\n", tarefas[k].nome, killed);
+
+        fprintf(arquivo_saida_edf, "[%s] %d\n", tarefas[k].nome, killed);
     }
 
-    fclose(arquivo_saida_rate);
+    fclose(arquivo_saida_edf);
 }
 
 
 int main(int argc, char *argv[]){
 
     if (argc != 3){
-        fprintf(stderr, "Quantidade de argumentos errada. Formato certo ./scheduler [algoritmo] [voo.txt]");
+        fprintf(stderr, "Quantidade de argumentos errada. Formato certo ./scheduler [algoritmo] [voo.txt]\n");
         exit(1);
     }
 
