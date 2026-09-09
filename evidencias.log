@@ -285,3 +285,9 @@ i=99 idle
 [?2004lexit
 
 Script done on 2026-09-08 22:57:49-03:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2026-09-09 16:10:42-03:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="170" LINES="13"]
+[?2004h]0;letciasiqueira@Letcia: ~/lmss4[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4[00m$ git pushcommit -m "Finalizando lógica do rate e começando a escrever no arquivo"[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cadd .[Kmake clean./scheduler rate voo.txt
+[?2004l[?2004h]0;letciasiqueira@Letcia: ~/lmss4[01;32mletciasiqueira@Letcia[00m:[01;34m~/lmss4[00m$ exit
+[?2004lexit
+
+Script done on 2026-09-09 16:10:52-03:00 [COMMAND_EXIT_CODE="0"]
