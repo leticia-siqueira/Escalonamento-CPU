@@ -116,15 +116,7 @@ void funcao_rate(escalonador tarefas[], int tarefas_totais, int tempo_total){
     for (int i = 0; i < tempo_total; i++){
 
         int perdeu_prazo_agora = 0;
-
-        for (int j = 0; j < tarefas_totais; j++){
-            if (i % tarefas[j].periodo == 0){
-                tarefas[j].tempo_sobrando = tarefas[j].burst;
-                tarefas[j].deadline_agora = i + tarefas[j].deadline;
-                tarefas[j].esta_pronta = 1;
-            }
-        }
-
+        
         for (int a = 0; a < tarefas_totais; a++){
             
             if (tarefas[a].esta_pronta == 1 && tarefas[a].deadline_agora == i && tarefas[a].tempo_sobrando > 0){
@@ -137,6 +129,15 @@ void funcao_rate(escalonador tarefas[], int tarefas_totais, int tempo_total){
                 }
             }
         }
+        
+        for (int j = 0; j < tarefas_totais; j++){
+            if (i % tarefas[j].periodo == 0){
+                tarefas[j].tempo_sobrando = tarefas[j].burst;
+                tarefas[j].deadline_agora = i + tarefas[j].deadline;
+                tarefas[j].esta_pronta = 1;
+            }
+        }
+
 
         int tarefa_priorizada = -1;
 
@@ -247,15 +248,7 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
     for (int i = 0; i < tempo_total; i++){
 
         int perdeu_prazo_agora = 0;
-
-        for (int j = 0; j < tarefas_totais; j++){
-            if (i % tarefas[j].periodo == 0){
-                tarefas[j].tempo_sobrando = tarefas[j].burst;
-                tarefas[j].deadline_agora = i + tarefas[j].deadline;
-                tarefas[j].esta_pronta = 1;
-            }
-        }
-
+        
         for (int a = 0; a < tarefas_totais; a++){
 
             if (tarefas[a].esta_pronta == 1 && tarefas[a].deadline_agora == i && tarefas[a].tempo_sobrando > 0){
@@ -268,6 +261,15 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
                 }
             }
         }
+
+        for (int j = 0; j < tarefas_totais; j++){
+            if (i % tarefas[j].periodo == 0){
+                tarefas[j].tempo_sobrando = tarefas[j].burst;
+                tarefas[j].deadline_agora = i + tarefas[j].deadline;
+                tarefas[j].esta_pronta = 1;
+            }
+        }
+
 
         int tarefa_priorizada = -1;
 
