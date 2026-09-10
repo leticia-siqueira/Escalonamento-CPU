@@ -196,14 +196,19 @@ void funcao_rate(escalonador tarefas[], int tarefas_totais, int tempo_total){
     int duracao_final = tempo_total - inicio;
     
     if (duracao_final > 0){
+
+    if (tarefa_atual == -1){
+        fprintf(arquivo_saida_rate, "idle for %d units\n", duracao_final);
+
+    }else if (tarefas[tarefa_atual].tempo_sobrando == 0){
         
-        if (tarefa_atual == -1){
-            fprintf(arquivo_saida_rate, "idle for %d units\n", duracao_final);
+        fprintf(arquivo_saida_rate, "[%s] for %d units - F\n", tarefas[tarefa_atual].nome, duracao_final);
+
+    }else{
         
-        }else{
-            fprintf(arquivo_saida_rate, "[%s] for %d units\n", tarefas[tarefa_atual].nome, duracao_final);
-        }
+        fprintf(arquivo_saida_rate, "[%s] for %d units\n", tarefas[tarefa_atual].nome, duracao_final);
     }
+}
 
     fprintf(arquivo_saida_rate, "\nLOST DEADLINES\n\n");
     
@@ -329,13 +334,18 @@ void funcao_edf(escalonador tarefas[], int tarefas_totais, int tempo_total){
 
     if (duracao_final > 0){
 
-        if (tarefa_atual == -1){
-            fprintf(arquivo_saida_edf, "idle for %d units\n", duracao_final);
+    if (tarefa_atual == -1){
+        fprintf(arquivo_saida_edf, "idle for %d units\n", duracao_final);
 
-        }else{
-            fprintf(arquivo_saida_edf, "[%s] for %d units\n", tarefas[tarefa_atual].nome, duracao_final);
-        }
+    }else if (tarefas[tarefa_atual].tempo_sobrando == 0){
+    
+        fprintf(arquivo_saida_edf, "[%s] for %d units - F\n", tarefas[tarefa_atual].nome, duracao_final);
+
+    }else{
+        
+        fprintf(arquivo_saida_edf, "[%s] for %d units\n", tarefas[tarefa_atual].nome, duracao_final);
     }
+}
 
     fprintf(arquivo_saida_edf, "\nLOST DEADLINES\n\n");
 
