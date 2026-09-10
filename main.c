@@ -35,7 +35,7 @@ void ler_arquivo_entrada(const char *nome_arquivo){
     char linha[MAX_LINHA];
 
     if(fgets(linha, sizeof(linha), arquivo_de_entrada) == NULL){
-        fprintf(stderr, "Erro de arquivo ou linha vazia, coloque as informacoes em linhas seguidas\n");
+        fprintf(stderr, "Erro de arquivo de entrada vazio, preencha corretamente o arquivo\n");
         fclose(arquivo_de_entrada);
         exit(1);
     }
@@ -53,8 +53,9 @@ void ler_arquivo_entrada(const char *nome_arquivo){
         
         char nome[100];
         int periodo, deadline, burst;
+        char verifica_argumento_extra[MAX_LINHA];
         
-        int campos_lidos = sscanf(linha, "%99s %d %d %d", nome, &periodo, &deadline, &burst);
+        int campos_lidos = sscanf(linha, "%99s %d %d %d %s", nome, &periodo, &deadline, &burst, verifica_argumento_extra);
         
         if (campos_lidos != 4){
             fprintf(stderr, "Quantidade de argumentos da tarefa esta errado, use [nome] [periodo] [deadline] [burst]\n");
@@ -129,7 +130,7 @@ void funcao_rate(escalonador tarefas[], int tarefas_totais, int tempo_total){
                 }
             }
         }
-        
+
         for (int j = 0; j < tarefas_totais; j++){
             if (i % tarefas[j].periodo == 0){
                 tarefas[j].tempo_sobrando = tarefas[j].burst;
